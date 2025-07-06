@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Art & UI Design Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #434343 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        header h1 {
+            font-size: 3em;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+        
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .search-bar input {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            width: 300px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+        }
+        
+        .search-bar button {
+            padding: 12px 25px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 25px;
+            background: #ff6b6b;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 10px;
+        }
+        
+        .filter-tab {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-tab.active, .filter-tab:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #999;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .product-card:hover .product-image::after {
+            transform: translateX(100%);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .product-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .product-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+        
+        .product-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .buy-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #000000, #434343);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .paypal-button {
+            background: #0070ba;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .paypal-button:hover {
+            background: #005ea6;
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .search-bar input {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+            
+            .filter-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ Majin Studios</h1>
+            <p>Premium UI Designs & Digital Art</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search designs...">
+                <button onclick="searchProducts()">Search</button>
+            </div>
+        </header>
+        
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterProducts('all')">All</button>
+            <button class="filter-tab" onclick="filterProducts('ui')">UI Designs</button>
+            <button class="filter-tab" onclick="filterProducts('digital-art')">Digital Art</button>
+            <button class="filter-tab" onclick="filterProducts('icons')">Icons</button>
+        </div>
+        
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be populated by JavaScript -->
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Majin Studios. All rights reserved.</p>
+            <p>Instant download after payment • PayPal secure checkout</p>
+            <p style="margin-top: 15px;">
+                <strong>Discord:</strong> stejin • 
+                <a href="https://discord.gg/f5EhXTmphY" style="color: rgba(255, 255, 255, 0.9); text-decoration: underline;">Join our server</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 14px; color: rgba(255, 255, 255, 0.7);">
+                💬 DM me for special orders and custom designs
+            </p>
+        </div>
+    </div>
+    
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Complete Your Purchase</h2>
+            <p id="modalDescription">You're about to purchase:</p>
+            <div id="modalPrice" style="font-size: 24px; font-weight: bold; color: #ff6b6b; margin: 20px 0;"></div>
+            <p style="margin-bottom: 20px;">Click below to pay securely with PayPal. You'll receive your download link immediately after payment.</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
+                💬 Need something custom? DM <strong>stejin</strong> on Discord for special orders!
+            </p>
+            <button class="paypal-button" onclick="processPayment()">Pay with PayPal</button>
+        </div>
+    </div>
+    
+    <script>
+        // Sample product data - replace with your actual products
+        const products = [
+            {
+                id: 1,
+                title: "Modern Dashboard UI Kit",
+                description: "Complete dashboard design with 50+ components and screens",
+                price: 29.99,
+                category: "ui",
+                tags: ["Dashboard", "Admin", "Modern"],
+                icon: "🎨"
+            },
+            {
+                id: 2,
+                title: "Mobile App UI Pack",
+                description: "iOS and Android app designs with 30+ screens",
+                price: 39.99,
+                category: "ui",
+                tags: ["Mobile", "App", "iOS", "Android"],
+                icon: "📱"
+            },
+            {
+                id: 3,
+                title: "Abstract Art Collection",
+                description: "10 high-resolution abstract digital artworks",
+                price: 19.99,
+                category: "digital-art",
+                tags: ["Abstract", "Digital", "Art"],
+                icon: "🎭"
+            },
+            {
+                id: 4,
+                title: "Icon Pack - 200 Icons",
+                description: "Minimalist icons for web and mobile projects",
+                price: 14.99,
+                category: "icons",
+                tags: ["Icons", "Minimalist", "Web", "Mobile"],
+                icon: "⚡"
+            },
+            {
+                id: 5,
+                title: "E-commerce Website Kit",
+                description: "Complete e-commerce design with cart and checkout",
+                price: 49.99,
+                category: "ui",
+                tags: ["E-commerce", "Website", "Shopping"],
+                icon: "🛒"
+            },
+            {
+                id: 6,
+                title: "Nature Photography Pack",
+                description: "15 stunning nature photographs in high resolution",
+                price: 24.99,
+                category: "digital-art",
+                tags: ["Nature", "Photography", "Landscape"],
+                icon: "🌲"
+            }
+        ];
+        
+        let currentProducts = [...products];
+        let selectedProduct = null;
+        
+        function renderProducts(productsToRender) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            
+            productsToRender.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <span style="font-size: 64px;">${product.icon}</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">${product.title}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-price">$${product.price}</div>
+                        <div class="product-tags">
+                            ${product.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <button class="buy-button" onclick="openPurchaseModal(${product.id})">
+                            Buy Now - Instant Download
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(productCard);
+            });
+        }
+        
+        function filterProducts(category) {
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter products
+            if (category === 'all') {
+                currentProducts = [...products];
+            } else {
+                currentProducts = products.filter(product => product.category === category);
+            }
+            
+            renderProducts(currentProducts);
+        }
+        
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.title.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm) ||
+                product.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+            renderProducts(filteredProducts);
+        }
+        
+        function openPurchaseModal(productId) {
+            selectedProduct = products.find(p => p.id === productId);
+            document.getElementById('modalTitle').textContent = selectedProduct.title;
+            document.getElementById('modalDescription').textContent = selectedProduct.description;
+            document.getElementById('modalPrice').textContent = `$${selectedProduct.price}`;
+            document.getElementById('purchaseModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('purchaseModal').style.display = 'none';
+        }
+        
+        function processPayment() {
+            // In a real implementation, you would integrate with PayPal's API
+            // For now, we'll show a success message
+            alert(`Processing payment for ${selectedProduct.title} - $${selectedProduct.price}\n\nIn a real implementation, this would redirect to PayPal checkout.\n\nYou'll need to:\n1. Set up a PayPal business account\n2. Integrate PayPal SDK or use PayPal buttons\n3. Handle payment completion and file delivery`);
+            closeModal();
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('purchaseModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Initialize page
+        renderProducts(products);
+    </script>
+</body>
+</html>
